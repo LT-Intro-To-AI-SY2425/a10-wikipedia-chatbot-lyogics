@@ -111,6 +111,41 @@ def get_birth_date(name: str) -> str:
 
     return match.group("birth")
 
+def get_death_date(name: str) -> str:
+    """Gets death date of given person
+    
+    Args:
+        name - name of person
+    
+    Returns:
+        death date of given person
+    """
+    infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
+    pattern = r"(?:Died\D*)(?P<death>\d{4}-\d{2}-\d{2})"
+    error_text = (
+        "Page infobox has no death information in yyyy-mm-dd format"
+    )
+    match = get_match(infobox_text, pattern, error_text)
+
+    return match.group("death")
+
+def get_spouse(name: str) -> str:
+    """Gets spouse of given person
+    
+    Args:
+        name - name of person
+    
+    Returns:
+        spouse(s) of given person
+    """
+    infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
+    pattern = r"(?:Spouse\D*)(?P<relation>\d{4}-\d{2}-\d{2})"
+    error_text = (
+        "Page infobox has no spouse or person has multiple spouses"
+    )
+    match = get_match(infobox_text, pattern, error_text)
+
+    return match.group("relationship")
 
 # below are a set of actions. Each takes a list argument and returns a list of answers
 # according to the action and the argument. It is important that each function returns a
