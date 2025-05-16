@@ -147,6 +147,23 @@ def get_spouse(name: str) -> str:
 
     return match.group("relationship")
 
+def get_occupations(name: str) -> str:
+    """Gets the careers of given person
+    
+    Args:
+        name - name of person
+        
+    Returns:
+        the occupations of said person
+    """
+    infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
+    pattern = r"(?:Occupations\D*)(?P<career>\d{4}-\d{2}-\d{2})"
+    error_text = (
+        "Page infobox has no occupation listed or only one listed"
+    )
+    match = get_match(infobox_text, pattern, error_text)
+
+    return match.group("career")
 # below are a set of actions. Each takes a list argument and returns a list of answers
 # according to the action and the argument. It is important that each function returns a
 # list of the answer(s) and not just the answer itself.
