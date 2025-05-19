@@ -192,7 +192,38 @@ def polar_radius(matches: List[str]) -> List[str]:
     """
     return [get_polar_radius(matches[0])]
 
+def death_date(matches: List[str]) -> List[str]:
+    """Returns date of death of a named person in matches
+    
+    Args:
+        matches - match from pattern of person's name to find death
+        
+    Returns:
+        death date of named person
+    """
+    return [get_death_date(" ".join(matches))]
 
+def relationship(matches: List[str]) -> List[str]:
+    """Returns the spouse of a named person in matches
+    
+    Args:
+        matches - match from pattern of person's name to find spouse
+    
+    Returns:
+        spouse of named person
+    """
+    return [get_spouse(matches[0])]
+
+def careers(matches: List[str]) -> List[str]:
+    """Returns the occupations of a named person in matches
+    
+    Args:
+        matches - match from pattern of person's name to find careers
+    
+    Returns:
+        careers of named person
+    """
+    return [get_occupations(matches[0])]
 # dummy argument is ignored and doesn't matter
 def bye_action(dummy: List[str]) -> None:
     raise KeyboardInterrupt
@@ -208,6 +239,9 @@ Action = Callable[[List[str]], List[Any]]
 pa_list: List[Tuple[Pattern, Action]] = [
     ("when was % born".split(), birth_date),
     ("what is the polar radius of %".split(), polar_radius),
+    ("when did % die".split(), death_date),
+    ("who is %'s spouse".split(), relationship),
+    ("what are %'s careers".split(), careers),
     (["bye"], bye_action),
 ]
 
