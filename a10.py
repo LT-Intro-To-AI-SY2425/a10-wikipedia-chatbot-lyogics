@@ -121,7 +121,7 @@ def get_death_date(name: str) -> str:
         death date of given person
     """
     infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
-    pattern = r"(?:Died\D*)(?P<death>\d{4}-\d{2}-\d{2})"
+    pattern = r"/(?:Died\D) (.*)"
     error_text = (
         "Page infobox has no death information in yyyy-mm-dd format"
     )
