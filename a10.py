@@ -103,7 +103,6 @@ def get_birth_date(name: str) -> str:
         birth date of the given person
     """
     infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
-    print(infobox_text)
     pattern = r"(?:Born\D*)(?P<birth>\d{4}-\d{2}-\d{2})"
     error_text = (
         "Page infobox has no birth information (at least none in xxxx-xx-xx format)"
@@ -148,23 +147,23 @@ def get_og_network(name: str) -> str:
 
     return match.group("net")
 
-def get_occupations(name: str) -> str:
-    """Gets the careers of given person
+def get_nickname(name: str) -> str:
+    """Gets the nickname of an accredited university
     
     Args:
-        name - name of person
+        name - name of uni
         
     Returns:
-        the occupations of said person
+        the nickname of said university
     """
     infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
-    pattern = r"(?:Occupations\D*)(?P<career>\d{4}-\d{2}-\d{2})"
+    pattern = r"(?:Nickname)(?P<nicky>\w*)(?:Sporting)"
     error_text = (
-        "Page infobox has no occupation listed or only one listed"
+        "Page infobox has no nickname listed"
     )
     match = get_match(infobox_text, pattern, error_text)
 
-    return match.group("career")
+    return match.group("nicky")
 # below are a set of actions. Each takes a list argument and returns a list of answers
 # according to the action and the argument. It is important that each function returns a
 # list of the answer(s) and not just the answer itself.
@@ -215,16 +214,16 @@ def network(matches: List[str]) -> List[str]:
     """
     return [get_og_network(matches[0])]
 
-def careers(matches: List[str]) -> List[str]:
-    """Returns the occupations of a named person in matches
+def nicky(matches: List[str]) -> List[str]:
+    """Returns the nicknames of a named university in matches
     
     Args:
-        matches - match from pattern of person's name to find careers
+        matches - match from pattern of uni name to find nickname
     
     Returns:
-        careers of named person
+        nickname of named uni
     """
-    return [get_occupations(matches[0])]
+    return [get_nickname(matches[0])]
 # dummy argument is ignored and doesn't matter
 def bye_action(dummy: List[str]) -> None:
     raise KeyboardInterrupt
@@ -244,7 +243,7 @@ pa_list: List[Tuple[Pattern, Action]] = [
     ("how many subs does % have".split(), sub_count),
     ("what is %'s subscriber count".split(), sub_count),
     ("what network did % release on".split(), network),
-    ("what are %'s careers".split(), careers),
+    ("the nickname of % is".split(), nicky),
     (["bye"], bye_action),
 ]
 
