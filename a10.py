@@ -103,6 +103,7 @@ def get_birth_date(name: str) -> str:
         birth date of the given person
     """
     infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
+    print(infobox_text)
     pattern = r"(?:Born\D*)(?P<birth>\d{4}-\d{2}-\d{2})"
     error_text = (
         "Page infobox has no birth information (at least none in xxxx-xx-xx format)"
@@ -110,6 +111,24 @@ def get_birth_date(name: str) -> str:
     match = get_match(infobox_text, pattern, error_text)
 
     return match.group("birth")
+
+def get_subscriber_count(name: str) -> str:
+    """Gets sub count of given youtube username
+    
+    Args:
+        name - username
+
+    Returns:
+        subcount of given user
+    """
+    infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
+    pattern = r"(?:Subscribers\D*)(?P<count>\d*.\w*)"
+    error_text = (
+        "Page infobox has no subscriber information"
+    )
+    match = get_match(infobox_text, pattern, error_text)
+    
+    return match.group("count")
 
 def get_death_date(name: str) -> str:
     """Gets death date of given person
@@ -286,4 +305,4 @@ def query_loop() -> None:
 
 
 # uncomment the next line once you've implemented everything are ready to try it out
-# query_loop()
+query_loop()
