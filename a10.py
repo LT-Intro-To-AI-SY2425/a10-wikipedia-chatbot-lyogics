@@ -241,7 +241,6 @@ pa_list: List[Tuple[Pattern, Action]] = [
     ("what is the polar radius of %".split(), polar_radius),
     ("how many subscribers does % have".split(), sub_count),
     ("how many subs does % have".split(), sub_count),
-    ("what is %'s subscriber count".split(), sub_count),
     ("what network did % release on".split(), network),
     ("the nickname of % is".split(), nicky),
     (["bye"], bye_action),
@@ -272,7 +271,7 @@ def search_pa_list(src: List[str]) -> List[str]:
 def query_loop() -> None:
     """The simple query loop. The try/except structure is to catch Ctrl-C or Ctrl-D
     characters and exit gracefully"""
-    print("Welcome to the Wikipedia database!\n")
+    print("Welcome to the Wikipedia chatbot!\n")
     while True:
         try:
             print()
