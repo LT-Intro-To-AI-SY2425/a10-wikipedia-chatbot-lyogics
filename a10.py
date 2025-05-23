@@ -130,41 +130,23 @@ def get_subscriber_count(name: str) -> str:
     
     return match.group("count")
 
-def get_death_date(name: str) -> str:
-    """Gets death date of given person
+def get_og_network(name: str) -> str:
+    """Gets network of OG release of a tv show
     
     Args:
-        name - name of person
+        name - name of tv show
     
     Returns:
-        death date of given person
+        network broadcasted
     """
     infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
-    pattern = r"/(?:Died\D) (.*)"
+    pattern = r"(?:Network)(?P<net>\w*)(?:Release)"
     error_text = (
-        "Page infobox has no death information in yyyy-mm-dd format"
+        "Page infobox has no specified release network"
     )
     match = get_match(infobox_text, pattern, error_text)
 
-    return match.group("death")
-
-def get_spouse(name: str) -> str:
-    """Gets spouse of given person
-    
-    Args:
-        name - name of person
-    
-    Returns:
-        spouse(s) of given person
-    """
-    infobox_text = clean_text(get_first_infobox_text(get_page_html(name)))
-    pattern = r"(?:Spouse\D*)(?P<relation>\d{4}-\d{2}-\d{2})"
-    error_text = (
-        "Page infobox has no spouse or person has multiple spouses"
-    )
-    match = get_match(infobox_text, pattern, error_text)
-
-    return match.group("relationship")
+    return match.group("net")
 
 def get_occupations(name: str) -> str:
     """Gets the careers of given person
@@ -211,27 +193,27 @@ def polar_radius(matches: List[str]) -> List[str]:
     """
     return [get_polar_radius(matches[0])]
 
-def death_date(matches: List[str]) -> List[str]:
-    """Returns date of death of a named person in matches
+def sub_count(matches: List[str]) -> List[str]:
+    """Returns subscriber count of a named person in matches
     
     Args:
-        matches - match from pattern of person's name to find death
+        matches - match from pattern of person's name to find subcount
         
     Returns:
-        death date of named person
+        # of subscribers of named person
     """
-    return [get_death_date(" ".join(matches))]
+    return [get_subscriber_count(" ".join(matches))]
 
-def relationship(matches: List[str]) -> List[str]:
-    """Returns the spouse of a named person in matches
+def network(matches: List[str]) -> List[str]:
+    """Returns the network (ON RELEASE) of a named TV show in matches
     
     Args:
-        matches - match from pattern of person's name to find spouse
+        matches - match from pattern of TV show to find network
     
     Returns:
-        spouse of named person
+        on release network of tv show
     """
-    return [get_spouse(matches[0])]
+    return [get_og_network(matches[0])]
 
 def careers(matches: List[str]) -> List[str]:
     """Returns the occupations of a named person in matches
@@ -258,8 +240,10 @@ Action = Callable[[List[str]], List[Any]]
 pa_list: List[Tuple[Pattern, Action]] = [
     ("when was % born".split(), birth_date),
     ("what is the polar radius of %".split(), polar_radius),
-    ("when did % die".split(), death_date),
-    ("who is %'s spouse".split(), relationship),
+    ("how many subscribers does % have".split(), sub_count),
+    ("how many subs does % have".split(), sub_count),
+    ("what is %'s subscriber count".split(), sub_count),
+    ("what network did % release on".split(), network),
     ("what are %'s careers".split(), careers),
     (["bye"], bye_action),
 ]
