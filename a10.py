@@ -270,7 +270,7 @@ def search_pa_list(src: List[str]) -> List[str]:
 def query_loop() -> None:
     """The simple query loop. The try/except structure is to catch Ctrl-C or Ctrl-D
     characters and exit gracefully"""
-    print("Welcome to the movie database!\n")
+    print("Welcome to the Wikipedia database!\n")
     while True:
         try:
             print()
@@ -286,4 +286,4 @@ def query_loop() -> None:
 
 
 # uncomment the next line once you've implemented everything are ready to try it out
-query_loop()
+# query_loop()
